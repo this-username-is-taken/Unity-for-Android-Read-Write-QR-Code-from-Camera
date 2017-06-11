@@ -53,7 +53,7 @@ public class QRCodeFromPhoto : MonoBehaviour {
 	}
 
 	private void OnQRCodeScanned(string scannedText) {
-		// Here you do whatever you want to do with the scanned text
+		// Here you do what you want with the scanned text
 		// scannedText will be empty when the scan fails
 	}
 }
