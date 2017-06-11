@@ -2,6 +2,7 @@
 using System.IO;
 using UnityEngine;
 using ZXing; // Need to have the zxing.unity.dll in the project
+using ZXing.Common;
 
 public class QRCodeFromPhoto : MonoBehaviour {
 
@@ -40,11 +41,20 @@ public class QRCodeFromPhoto : MonoBehaviour {
 	private void PhotoRequestEnded() {
 		string qrCodeImagePath = Application.persistentDataPath + "/" + qrCodeImageName;
 		if (File.Exists(qrCodeImagePath)) {
+			// Load the image into a Texture2D
 			fileData = File.ReadAllBytes(qrCodeImagePath);
 			Texture2D texture2D = new Texture2D(2, 2);
 			texture2D.LoadImage(fileData);
-
-			IBarcodeReader barcodeReader = new BarcodeReader();
+			
+			// Define the QR Code reader
+			BarcodeReader barcodeReader = new BarcodeReader();
+			List<BarcodeFormat> possibleFormats = new List<BarcodeFormat>();
+			possibleFormats.Add(BarcodeFormat.QR_CODE);
+			barcodeReader.Options = new DecodingOptions() {
+				PossibleFormats = possibleFormats,
+				CharacterSet = "UTF-8",
+			};
+			
 			// Scan the texture
 			var result = barcodeReader.Decode(texture2D.GetPixels32(), texture2D.width, texture2D.height);
 			string scannedText = result == null ? "" : result.Text;
