@@ -20,7 +20,7 @@ public class QRCodeFromPhoto : MonoBehaviour {
 		intentObject.Call<AndroidJavaObject>("setAction", mediaStoreClass.GetStatic<string>("ACTION_IMAGE_CAPTURE"));
 
 		//define the path and filename to save photo taken by Camera activity
-		string filePath = Application.persistentDataPath + "/" + qrCodeImageName;
+		string filePath = Application.persistentDataPath + Path.DirectorySeparatorChar + qrCodeImageName;
 		AndroidJavaClass uriClass = new AndroidJavaClass("android.net.Uri");
 		AndroidJavaObject fileObject = new AndroidJavaObject("java.io.File", filePath);
 		AndroidJavaObject uriObject = uriClass.CallStatic<AndroidJavaObject>("fromFile", fileObject);
@@ -36,7 +36,7 @@ public class QRCodeFromPhoto : MonoBehaviour {
 	}
 
 	private void PhotoRequestEnded() {
-		string qrCodeImagePath = Application.persistentDataPath + "/" + qrCodeImageName;
+		string qrCodeImagePath = Application.persistentDataPath + Path.DirectorySeparatorChar + qrCodeImageName;
 		if (File.Exists(qrCodeImagePath)) {
 			// Load the image into a Texture2D
 			fileData = File.ReadAllBytes(qrCodeImagePath);
